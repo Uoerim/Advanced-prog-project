@@ -57,7 +57,7 @@ public class User {
         return this.profilepic;
     }
 
-    public int friends() {
+    public int getFriends() {
         return this.friends;
     }
 
@@ -72,6 +72,11 @@ public class User {
     public void addFriend(User user) {
         friendList.add(user);
         friends++;
+    }
+
+    public void removeFriend(User user) {
+        friendList.remove(user);
+        friends--;
     }
 
 }
