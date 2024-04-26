@@ -1,5 +1,4 @@
 package components.content;
-//
 import java.util.ArrayList;
 
 public class Posts {

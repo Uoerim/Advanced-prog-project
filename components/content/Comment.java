@@ -1,6 +1,4 @@
 package components.content;
-//
-import java.util.ArrayList;
 
 public class Comment {
     // Variables for the comments class
@@ -8,8 +6,6 @@ public class Comment {
     private String userID;
     private String commentText;
     private int postID;
-    private int interactions;
-    private ArrayList<Integer> interactedUsers;
     /////////////////////////////////
 
     // Constructor for posts class
@@ -18,8 +14,6 @@ public class Comment {
         this.userID = userID;
         this.commentText = commentText;
         this.postID = postID;
-        this.interactions = 0;
-        this.interactedUsers = new ArrayList<Integer>();
 
     }
     /////////////////////////////////
@@ -48,28 +42,5 @@ public class Comment {
     public int getPostID() {
         return postID;
     }
-    public int getInteractions() {
-        return interactions;
-    }
-    //////////////////////////////
-
-    // Methods to increase and decrease interaction count
-    public void incrementInteractions() {
-        interactions++;
-    }
-
-    public void decrementInteractions() {
-        interactions--;
-    }
-
-    // Methods to add and remove interacted users
-    public void addInteractedUser(int userID) {
-        interactedUsers.add(userID);
-    }
-
-    public void removeInteractedUser(int userID) {
-        interactedUsers.remove(userID);
-    }
     /////////////////////////////////
-
 }
