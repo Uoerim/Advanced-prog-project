@@ -8,7 +8,7 @@ public class User {
     private ArrayList<Integer> friendList; //user or integer?
     private int friendCount;
     private String userToken;
-    private ArrayList<Posts> posts;
+    // private ArrayList<Posts> posts; //not same package
     // private About about;
 
     public User(String userName, String userToken) {
@@ -16,9 +16,9 @@ public class User {
         this.userToken = userToken;
         this.userBio = "";
         this.profilePic = "";
-        this.posts=new ArrayList<Posts>();
+        //this.posts=new ArrayList<Posts>();
         this.friendList = new ArrayList<Integer>();
-        this.friendCount = friendCount;
+        this.friendCount = 0;
     }
 
     // Setters and Getters
@@ -29,9 +29,10 @@ public class User {
     public String getUserName() {
         return userName;
     }
-    public ArrayList getPosts(){
-        return this.posts;
-    }
+    
+    // public ArrayList getPosts(){
+    //     return this.posts;
+    // }
 
     public void setUserBio(String userBio) {
         this.userBio = userBio;

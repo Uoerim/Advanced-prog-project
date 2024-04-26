@@ -3,16 +3,16 @@ public class Interaction {
     private int userID;
     private int postID;
 
-    public Interaction(String userID, int postID) {
+    public Interaction(int userID, int postID) {
         this.userID = userID;
         this.postID = postID;
     }
 
     // Setters and getters
-    public void setUserID(String userID) {
+    public void setUserID(int userID) {
         this.userID = userID;
     }
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
     public void setPostID(int postID) {

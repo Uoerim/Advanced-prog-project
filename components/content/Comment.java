@@ -9,7 +9,7 @@ public class Comment {
     /////////////////////////////////
 
     // Constructor for posts class
-    public Comment(int commentID, String userID, String commentText, int postID) {
+    public Comment(int commentID, int userID, String commentText, int postID) {
         this.commentID = commentID;
         this.userID = userID;
         this.commentText = commentText;
@@ -27,7 +27,7 @@ public class Comment {
         return commentID;
     }
 
-    public String getUserID() {
+    public int getUserID() {
         return userID;
     }
 
