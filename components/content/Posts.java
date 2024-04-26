@@ -8,9 +8,9 @@ public class Posts {
     private String postImage;
     private int postID;
     private int userID;
-    private int interactions;
+    private int interactionsCount;
     private ArrayList<Comment> comments;
-    private ArrayList<Integer> interactedUsers;
+    private ArrayList<Interaction> interactions;
     /////////////////////////////////
 
     // Constructor for posts class
@@ -19,9 +19,9 @@ public class Posts {
         this.postImage = postImage;
         this.postID = postID;
         this.userID = userID;
-        this.interactions = 0;
+        this.interactionsCount = 0;
         this.comments = new ArrayList<Comment>();
-        this.interactedUsers = new ArrayList<Integer>();
+        this.interactions = new ArrayList<Interaction>();
     }
     /////////////////////////////////
 
@@ -50,12 +50,27 @@ public class Posts {
         return userID;
     }
 
-    public int getInteractions() {
-        return interactions;
+    public int getInteractionsCount() {
+        return interactionsCount;
     }
     /////////////////////////////////
 
-    // Method to display add and remove comments
+    // Method to display add and remove interactions
+    public ArrayList<Interaction> getInteractions() {
+        return interactions;
+    }
+    public void addInteraction(Interaction interaction) {
+        interactions.add(interaction);
+    }
+    public void removeInteraction(Interaction interaction) {
+        interactions.remove(interaction);
+    }
+
+    // Method to display, add and remove comments
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+
     public void addComment(Comment comment) {
         comments.add(comment);
     }
@@ -65,28 +80,13 @@ public class Posts {
     }
     /////////////////////////////////
 
-    // Method to display all comments
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
-    /////////////////////////////////
-
     // Methods to increase and decrease interaction count
-    public void incrementInteractions() {
-        interactions++;
+    public void incrementInteractionsCount() {
+        interactionsCount++;
     }
 
-    public void decrementInteractions() {
-        interactions--;
-    }
-
-    // Methods to add and remove interacted users
-    public void addInteractedUser(int userID) {
-        interactedUsers.add(userID);
-    }
-
-    public void removeInteractedUser(int userID) {
-        interactedUsers.remove(userID);
+    public void decrementInteractionsCount() {
+        interactionsCount--;
     }
     /////////////////////////////////
 

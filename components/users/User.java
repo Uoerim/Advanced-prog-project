@@ -1,82 +1,78 @@
 package components.users;
 
-import java.util.ArrayList; // import the ArrayList class
+import java.util.ArrayList;
 
 public class User {
-    private String username;
-    private String bio;
-    private String profilepic;
-    private ArrayList<User> friendList;
-    private About about;
-    private int friends;
+    private String userName;
+    private String userBio;
+    private String pfpPath;
+    private ArrayList<Integer> friendList;
+    private int friendCount;
+    private String userToken;
 
-    public User(String username, String bio, String profilepic, About about) {
-        this.username = username;
-        this.bio = bio;
-        this.profilepic = profilepic;
-        this.about = about;
+    public User(String userName, String userToken) {
+        this.userName = userName;
+        this.userToken = userToken;
+        this.userBio = "";
+        this.pfpPath = "";
+        this.friendList = new ArrayList<Integer>();
+        this.friendCount = friendList.size();
     }
 
-    public User(String username) {
-        this(username, "", "", new About());
+    // Setters and Getters
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public User(String username, String profilepic) {
-        this(username, "", profilepic, new About());
+    public String getUserName() {
+        return userName;
     }
 
-    public User(String username, String bio, String profilepic) {
-        this(username, bio, profilepic, new About());
+    public void setUserBio(String userBio) {
+        this.userBio = userBio;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getUserBio() {
+        return userBio;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
+    public void setPfpPath(String pfpPath) {
+        this.pfpPath = pfpPath;
     }
 
-    public void setProfilePic(String profilepic) {
-        this.profilepic = profilepic;
+    public String getPfpPath() {
+        return pfpPath;
     }
 
-    public void setAbout(About about) {
-        this.about = about;
+    public ArrayList<Integer> getFriendList() {
+        return friendList;
     }
 
-    public String getUsername() {
-        return this.username;
+    public int getFriendCount() {
+        return friendCount;
     }
 
-    public String getBio() {
-        return this.bio;
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 
-    public String getProfilePic() {
-        return this.profilepic;
+    public String getUserToken() {
+        return userToken;
     }
 
-    public int getFriends() {
-        return this.friends;
+    public void addFriend(int friendID) {
+        friendList.add(friendID);
+        friendCount++;
     }
 
-    public About getAbout() {
-        return this.about;
+    public void removeFriend(int friendID) {
+        friendList.remove(friendID);
+        friendCount--;
     }
+    ///////////////////////
 
-    public ArrayList getFriendList() {
-        return this.friendList;
+    // method to delete user
+    public void deleteUser() {
+        // delete user from database
     }
-
-    public void addFriend(User user) {
-        friendList.add(user);
-        friends++;
-    }
-
-    public void removeFriend(User user) {
-        friendList.remove(user);
-        friends--;
-    }
-
 }
