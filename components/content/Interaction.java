@@ -1,6 +1,6 @@
 package components.content;
 public class Interaction {
-    private String userID;
+    private int userID;
     private int postID;
 
     public Interaction(String userID, int postID) {

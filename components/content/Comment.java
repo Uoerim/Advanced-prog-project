@@ -3,7 +3,7 @@ package components.content;
 public class Comment {
     // Variables for the comments class
     private int commentID;
-    private String userID;
+    private int userID; //userID or User
     private String commentText;
     private int postID;
     /////////////////////////////////

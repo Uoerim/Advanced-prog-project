@@ -1,21 +1,24 @@
 package components.users;
-import java.util.ArrayList;
+import java.util.*;
 
 public class User {
     private String userName;
     private String userBio;
-    private String pfpPath;
-    private ArrayList<Integer> friendList;
+    private String profilePic;
+    private ArrayList<Integer> friendList; //user or integer?
     private int friendCount;
     private String userToken;
+    private ArrayList<Posts> posts;
+    // private About about;
 
     public User(String userName, String userToken) {
         this.userName = userName;
         this.userToken = userToken;
         this.userBio = "";
-        this.pfpPath = "";
+        this.profilePic = "";
+        this.posts=new ArrayList<Posts>();
         this.friendList = new ArrayList<Integer>();
-        this.friendCount = friendList.size();
+        this.friendCount = friendCount;
     }
 
     // Setters and Getters
@@ -26,6 +29,9 @@ public class User {
     public String getUserName() {
         return userName;
     }
+    public ArrayList getPosts(){
+        return this.posts;
+    }
 
     public void setUserBio(String userBio) {
         this.userBio = userBio;
@@ -35,12 +41,12 @@ public class User {
         return userBio;
     }
 
-    public void setPfpPath(String pfpPath) {
-        this.pfpPath = pfpPath;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 
-    public String getPfpPath() {
-        return pfpPath;
+    public String getProfilePic() {
+        return profilePic;
     }
 
     public ArrayList<Integer> getFriendList() {

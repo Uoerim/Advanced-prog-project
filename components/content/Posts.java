@@ -1,6 +1,5 @@
 package components.content;
-import java.util.ArrayList;
-
+import java.util.*;
 public class Posts {
     // Variables for the posts class
     private String postText;
