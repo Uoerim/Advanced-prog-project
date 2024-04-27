@@ -1,24 +1,20 @@
-package components.users;
+package com.mycompany.project1;
 import java.util.*;
 
 public class User {
     private String userName;
+    private String password;
     private String userBio;
     private String profilePic;
-    private ArrayList<Integer> friendList; //user or integer?
+    private ArrayList<User> friendList; 
     private int friendCount;
-    private String userToken;
     private ArrayList<Posts> posts;
-    // private About about;
-
-    public User(String userName, String userToken) {
+    
+    public User(String userName, String password) {
         this.userName = userName;
-        this.userToken = userToken;
-        this.userBio = "";
-        this.profilePic = "";
+        this.password = password;
         this.posts=new ArrayList<Posts>();
-        this.friendList = new ArrayList<Integer>();
-        this.friendCount = friendCount;
+        this.friendList = new ArrayList<User>();
     }
 
     // Setters and Getters
@@ -49,7 +45,7 @@ public class User {
         return profilePic;
     }
 
-    public ArrayList<Integer> getFriendList() {
+    public ArrayList<User> getFriendList() {
         return friendList;
     }
 
@@ -57,27 +53,26 @@ public class User {
         return friendCount;
     }
 
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUserToken() {
-        return userToken;
+    public String getPassword() {
+        return this.password;
     }
 
-    public void addFriend(int friendID) {
-        friendList.add(friendID);
+    public void addFriend(User friend) {
+        friendList.add(friend);
         friendCount++;
     }
 
-    public void removeFriend(int friendID) {
-        friendList.remove(friendID);
+    public void removeFriend(User friend) {
+        friendList.remove(friend);
         friendCount--;
     }
-    ///////////////////////
-
-    // method to delete user
+    
     public void deleteUser() {
-        // delete user from database
+        
     }
 }
+

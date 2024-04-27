@@ -1,23 +1,21 @@
-package components.content;
+package com.mycompany.project1;
 import java.util.*;
 public class Posts {
     // Variables for the posts class
     private String postText;
     private String postImage;
     private int postID;
-    private int userID;
+    private User user;
     private int interactionsCount;
+    private int commentsCount; 
     private ArrayList<Comment> comments;
     private ArrayList<Interaction> interactions;
     /////////////////////////////////
 
     // Constructor for posts class
-    public Posts(String postText, String postImage, int postID, int userID) {
-        this.postText = postText;
-        this.postImage = postImage;
+    public Posts(int postID, User user) {
         this.postID = postID;
-        this.userID = userID;
-        this.interactionsCount = 0;
+        this.user = user;
         this.comments = new ArrayList<Comment>();
         this.interactions = new ArrayList<Interaction>();
     }
@@ -29,7 +27,7 @@ public class Posts {
     }
 
     public String getPostText() {
-        return postText;
+        return this.postText;
     }
 
     public void setPostImage(String postImage) {
@@ -37,19 +35,22 @@ public class Posts {
     }
 
     public String getPostImage() {
-        return postImage;
+        return this.postImage;
     }
 
     public int getPostID() {
-        return postID;
+        return this.postID;
     }
 
-    public int getUserID() {
-        return userID;
+    public User getUser() {
+        return this.user;
     }
 
     public int getInteractionsCount() {
-        return interactionsCount;
+        return this.interactionsCount;
+    }
+    public int getCommentsCount(){
+        return this.commentsCount;
     }
     /////////////////////////////////
 
@@ -59,9 +60,11 @@ public class Posts {
     }
     public void addInteraction(Interaction interaction) {
         interactions.add(interaction);
+        interactionsCount++;
     }
     public void removeInteraction(Interaction interaction) {
         interactions.remove(interaction);
+        interactionsCount--;
     }
 
     // Method to display, add and remove comments
@@ -71,20 +74,12 @@ public class Posts {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+        commentsCount++;
     }
 
     public void removeComment(Comment comment) {
         comments.remove(comment);
-    }
-    /////////////////////////////////
-
-    // Methods to increase and decrease interaction count
-    public void incrementInteractionsCount() {
-        interactionsCount++;
-    }
-
-    public void decrementInteractionsCount() {
-        interactionsCount--;
+        commentsCount--;
     }
     /////////////////////////////////
 
