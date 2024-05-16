@@ -16,11 +16,11 @@ Engiverse is a new social media platform designed just for engineers and tech en
 
 ### Features
 
-Login
-Register
-Feed
-Add Friends
-Post your thoughts
+Login <br/>
+Register <br/>
+Feed <br/>
+Add Friends <br/>
+Post your thoughts <br/>
   
 ### Technical Features
 
