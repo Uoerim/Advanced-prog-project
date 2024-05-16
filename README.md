@@ -43,8 +43,8 @@ Mysql <br/>
 git clone https://github.com/uoerim/Advanced-prog-project.git
 ```
 
-- This project is made using pure JavaFx and MySql - Connector therefore it requires Java Libraries to run JavaFx 
-[JavaFX - Gluon](https://gluonhq.com/products/javafx/) <br/>
+- This project is made using pure JavaFx and MySql - Connector therefore it requires Java Libraries to run <br/>
+JavaFx - [JavaFX - Gluon](https://gluonhq.com/products/javafx/) <br/>
 Sql Connector - [MySQL : Download Connector/J](https://dev.mysql.com/downloads/connector/j/) <br/>
 
 
