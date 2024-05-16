@@ -40,9 +40,7 @@ Mysql <br/>
 ### How to clone project
 
 ```
-
 git clone https://github.com/uoerim/Advanced-prog-project.git
-
 ```
 
 - This project is made using pure JavaFx and MySql - Connector therefore it requires Java Libraries to run
@@ -58,7 +56,7 @@ Sql Connector - [MySQL : Download Connector/J](https://dev.mysql.com/downloads/c
 - Create a Sql Server on localhost:1234 or Change from the code.
 [Mamp Viewer - Sql Host](https://www.mamp.info/en/downloads/) - Personal Suggestion.
 - Run the Server.java located in ```server/Server.java```
-- Run the Main.java located in ``` app/Main.java```
+- Run the Main.java located in ```app/Main.java```
 - Enjoy!
 - 
 ## Creators
