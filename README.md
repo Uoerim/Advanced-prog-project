@@ -24,16 +24,16 @@ Post your thoughts <br/>
   
 ### Technical Features
 
-Using MultiThreading
-Using a client server architicture
+Using MultiThreading <br/>
+Using a client server architicture <br/>
 
 ### Technologies used
 
   
 
-Java
-JavaFx
-Mysql
+Java <br/>
+JavaFx <br/>
+Mysql <br/>
 
   
 
