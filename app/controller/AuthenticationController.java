@@ -80,15 +80,17 @@ public class AuthenticationController {
             }
             String res = sendServerRequest(
                     "REQ:LOGININTOACCOUNT:" + usernameInpLogin.getText() + ":" + passwordInpLogin.getText());
-            if (res == "FAILEDPASSWORD") {
-                errorView.setVisible(true);
-                errorView.setText("Incorrect Password!");
-                errorView.setLayoutX(580);
+            if (res.equals("FAILEDPASSWORD")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Username or password is incorrect!");
+                alert.showAndWait();
                 return;
-            } else if (res == "FAILED") {
-                errorView.setVisible(true);
-                errorView.setText("Username not found!");
-                errorView.setLayoutX(580);
+            } else if (res.equals("FAILED")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Username or password is incorrect!");
+                alert.showAndWait();
                 return;
             }
             if (res.charAt(res.length() - 1) == ':') {

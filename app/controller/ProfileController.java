@@ -199,6 +199,7 @@ public class ProfileController implements Initializable {
             return;
         }
         for (Integer postIndex : Session.getUser().getPosts()) {
+            System.out.println(Session.getUser().getPosts());
             Task<Void> task1 = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {

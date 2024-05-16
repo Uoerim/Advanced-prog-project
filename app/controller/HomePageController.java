@@ -154,6 +154,8 @@ public class HomePageController implements Initializable {
         } else if (event.getSource() == postBtn) {
             String res = sendServerRequest("REQ:NEWPOST:" + postText.getText() + ":" + Session.getUser().getUsername());
             String arr[] = res.split(":");
+            Session.getUser().getPosts().add(Integer.parseInt(arr[0]) - 1);
+            System.err.println(arr[0]);
             VBox rootVBox = new VBox();
             rootVBox.setMinHeight(234);
             rootVBox.setMinWidth(1020);

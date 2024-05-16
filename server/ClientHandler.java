@@ -377,12 +377,38 @@ public class ClientHandler extends Thread {
 
             int rowsInserted = statement1.executeUpdate();
             if (rowsInserted > 0) {
-                StringBuilder response = new StringBuilder();
-                // postID : postText : postImage : username : {comments} : {likes}
-                response.append(postCount + 1).append(":");
-                response.append(postText).append(":");
-                response.append(username);
-                return response.toString();
+                String updateCommentQUERY = "SELECT * FROM users WHERE username = ?";
+                PreparedStatement statement2 = null;
+                try {
+                    statement2 = connection.prepareStatement(updateCommentQUERY);
+                    statement2.setString(1, username);
+                    statement2.executeQuery();
+                    try (ResultSet resultSet = statement2.executeQuery()) {
+                        if (resultSet.next()) {
+                            String posts = resultSet.getString("posts");
+                            if (posts.equals("")) {
+                                posts += ++postCount;
+                            } else {
+                                posts += "," + ++postCount;
+                            }
+                            String updateCommentQUERY1 = "UPDATE users SET posts = ? WHERE username = ?";
+                            PreparedStatement statement3 = connection.prepareStatement(updateCommentQUERY1);
+                            statement3.setString(1, posts);
+                            statement3.setString(2, username);
+                            statement3.executeUpdate();
+                            statement3.close();
+                            StringBuilder response = new StringBuilder();
+                            // postID : postText : postImage : username : {comments} : {likes}
+                            response.append(postCount + 1).append(":");
+                            response.append(postText).append(":");
+                            response.append(username);
+                            return response.toString();
+                        }
+                    }
+                    statement1.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
 
             statement1.close();
@@ -735,7 +761,7 @@ public class ClientHandler extends Thread {
         return "FAILED";
     }
 
-    private static String sendFriendRequest(Connection connection, String username, String friendUsername){
+    private static String sendFriendRequest(Connection connection, String username, String friendUsername) {
         String friendQUERY = "SELECT * FROM users WHERE username = ?";
         PreparedStatement statement = null;
         try {
