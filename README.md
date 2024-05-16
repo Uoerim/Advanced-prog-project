@@ -43,9 +43,9 @@ Mysql <br/>
 git clone https://github.com/uoerim/Advanced-prog-project.git
 ```
 
-- This project is made using pure JavaFx and MySql - Connector therefore it requires Java Libraries to run
-JavaFx - [JavaFX - Gluon](https://gluonhq.com/products/javafx/)
-Sql Connector - [MySQL : Download Connector/J](https://dev.mysql.com/downloads/connector/j/)
+- This project is made using pure JavaFx and MySql - Connector therefore it requires Java Libraries to run JavaFx 
+[JavaFX - Gluon](https://gluonhq.com/products/javafx/) <br/>
+Sql Connector - [MySQL : Download Connector/J](https://dev.mysql.com/downloads/connector/j/) <br/>
 
 
 ### How to run the source code?
@@ -53,7 +53,7 @@ Sql Connector - [MySQL : Download Connector/J](https://dev.mysql.com/downloads/c
 - Import JavaFX & Sql Connector to your workspace.
 - add
  ``` --module-path [your path] /javafx-sdk-22.0.1/lib --add-modules javafx.controls,javafx.fxml ``` to your VM arguments.
-- Create a Sql Server on localhost:1234 or Change from the code.
+- Create a Sql Server on localhost:1234 or Change from the code. <br/>
 [Mamp Viewer - Sql Host](https://www.mamp.info/en/downloads/) - Personal Suggestion.
 - Run the Server.java located in ```server/Server.java```
 - Run the Main.java located in ```app/Main.java```
