@@ -2,7 +2,7 @@
 <p  align="center">
 <img  src="/resources/assets/logo.png"  width="150"  />
 </p>
-<h1  align="center">Lofi Player</h1>
+<h1  align="center">Engiverse</h1>
 <p  align="center">A Social Media Platform made with Java</p>
 <p  align="center">
 </p>
