@@ -221,6 +221,33 @@ public class ClientHandler extends Thread {
                         bw.newLine();
                         bw.flush();
                         break;
+                    case "CHECKIFMESSAGE":
+                        // 2 : username
+                        // 3 : friendusername
+                        // R : FOUND/NOTFOUND
+                        Response = checkIfMessage(connection, msg[2], msg[3]);
+                        bw.write(Response);
+                        bw.newLine();
+                        bw.flush();
+                        break;
+                    case "SENDMESSAGE":
+                        // 2 : username
+                        // 3 : friendusername
+                        // 4 : message
+                        // R : SUCCESS/FAILED
+                        Response = sendMessage(connection, msg[2], msg[3], msg[4]);
+                        bw.write(Response);
+                        bw.newLine();
+                        bw.flush();
+                        break;
+                    case "GETUSERS": 
+                        // R : username, fullname, email, userBio, picPath, friendCount,
+                        // friendrequestlist, friendrequestlist, friendrequestsentlist
+                        Response = getUsers(connection);
+                        bw.write(Response);
+                        bw.newLine();
+                        bw.flush();
+                        break;
                     case "Ping":
                         Response = "Pong!";
                         bw.write(Response);
@@ -917,9 +944,136 @@ public class ClientHandler extends Thread {
         return "FAILED";
     }
 
-    ///////////////////////////////////////////////////// Share
+    ///////////////////////////////////////////////////// Message
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Add code here to handle client share requests
+    public static String checkIfMessage(Connection connection, String username, String friendUsername) {
+        String friendQUERY = "SELECT * FROM users WHERE username = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(friendQUERY);
+            statement.setString(1, friendUsername);
+            statement.executeQuery();
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String friendQUERY2 = "SELECT * FROM messages WHERE username = ? AND friendusername = ?";
+                    PreparedStatement statement3 = connection.prepareStatement(friendQUERY2);
+                    statement3 = connection.prepareStatement(friendQUERY2);
+                    statement3.setString(1, username);
+                    statement3.setString(2, friendUsername);
+                    statement3.executeQuery();
+                    try (ResultSet resultSet2 = statement3.executeQuery()) {
+                        if (resultSet2.next()) {
+                            String friendQUERY4 = "SELECT * FROM messages WHERE username = ? AND friendusername = ?";
+                            PreparedStatement statement5 = connection.prepareStatement(friendQUERY4);
+                            statement5 = connection.prepareStatement(friendQUERY4);
+                            statement5.setString(1, username);
+                            statement5.setString(2, friendUsername);
+                            statement5.executeQuery();
+                            try (ResultSet resultSet3 = statement3.executeQuery()) {
+                                if (resultSet3.next()) {
+                                    return resultSet3.getString("messages");
+                                }
+                            }
+                        } else {
+                            String friendQUERY3 = "INSERT INTO messages (username, friendusername, messages) VALUES (?, ?, ?)";
+                            PreparedStatement statement4 = connection.prepareStatement(friendQUERY3);
+                            statement4 = connection.prepareStatement(friendQUERY3);
+                            statement4.setString(1, username);
+                            statement4.setString(2, friendUsername);
+                            statement4.setString(3, "/?Nomessagesyet");
+                            int rowsInserted = statement4.executeUpdate();
+                            if (rowsInserted > 0) {
+                                String friendQUERY57 = "INSERT INTO messages (username, friendusername, messages) VALUES (?, ?, ?)";
+                                PreparedStatement statement7 = connection.prepareStatement(friendQUERY57);
+                                statement7 = connection.prepareStatement(friendQUERY57);
+                                statement7.setString(1, friendUsername);
+                                statement7.setString(2, username);
+                                statement7.setString(3, "/?Nomessagesyet");
+                                int rowsInserted2 = statement7.executeUpdate();
+                                if (rowsInserted2 > 0) {
+                                    return "/?Nomessagesyet";
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    return "NOTFOUND";
+                }
+            }
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "FAILED";
+    }
+
+    public static String sendMessage(Connection connection, String username, String friendUsername, String message) {
+        String friendQUERY = "SELECT * FROM messages WHERE username = ? AND friendusername = ?";
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(friendQUERY);
+            statement.setString(1, username);
+            statement.setString(2, friendUsername);
+            statement.executeQuery();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    String messageData = resultSet.getString("messages");
+                    if (messageData.equals("/?Nomessagesyet")) {
+                        messageData = "";
+                    }
+                    if (messageData.equals("")) {
+                        messageData += "u|" + message;
+                    } else {
+                        messageData += "," + "u|" + message;
+                    }
+                    String updateFriendQUERY2 = "UPDATE messages SET messages = ? WHERE username = ? AND friendusername = ?";
+                    PreparedStatement statement2 = connection.prepareStatement(updateFriendQUERY2);
+                    statement2.setString(1, messageData);
+                    statement2.setString(2, username);
+                    statement2.setString(3, friendUsername);
+                    statement2.executeUpdate();
+                    statement2.close();
+                    String friendQUERY45 = "SELECT * FROM messages WHERE username = ? AND friendusername = ?";
+                    PreparedStatement statement77 = null;
+                    try {
+                        statement77 = connection.prepareStatement(friendQUERY45);
+                        statement77.setString(1, friendUsername);
+                        statement77.setString(2, username);
+                        statement77.executeQuery();
+                        try (ResultSet resultSet66 = statement77.executeQuery()) {
+                            if (resultSet66.next()) {
+                                String messageData2 = resultSet66.getString("messages");
+                                if (messageData2.equals("/?Nomessagesyet")) {
+                                    messageData2 = "";
+                                }
+                                if (messageData2.equals("")) {
+                                    messageData2 += "f|" + message;
+                                } else {
+                                    messageData2 += "," + "f|" + message;
+                                }
+                                String updateFriendQUERY25 = "UPDATE messages SET messages = ? WHERE username = ? AND friendusername = ?";
+                                PreparedStatement statement25 = connection.prepareStatement(updateFriendQUERY25);
+                                statement25.setString(1, messageData2);
+                                statement25.setString(2, friendUsername);
+                                statement25.setString(3, username);
+                                statement25.executeUpdate();
+                                statement25.close();
+                            }
+                        }
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            statement.close();
+            return "SUCCESS";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "FAILED";
+    }
 
     ///////////////////////////////////////////////////// Profile
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1041,7 +1195,6 @@ public class ClientHandler extends Thread {
         return "FAILED";
     }
 
-    // method to reset account
 
     // method to delete account
     private static String deleteAccount(Connection connection, String username) {
@@ -1059,9 +1212,25 @@ public class ClientHandler extends Thread {
         return "FAILED";
     }
 
-    ///////////////////////////////////////////////////// Search
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Add code here to handle client search requests
+    private static String getUsers(Connection connection){
+        // get all username from database table
+        String sql = "SELECT username FROM users";
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.executeQuery();
+            try (ResultSet resultSet = statement.executeQuery()) {
+                StringBuilder response = new StringBuilder();
+                while (resultSet.next()) {
+                    response.append(resultSet.getString("username")).append(":");
+                }
+                return response.toString();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "FAILED";
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

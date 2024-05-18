@@ -57,6 +57,8 @@ public class SettingsController {
     private Button changeBioBtn;
     @FXML
     private Button deleteAccountBtn;
+    @FXML 
+    private Button SearchBtn;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -100,7 +102,15 @@ public class SettingsController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (event.getSource() == settingsBtn) {
+        } else if(event.getSource() == SearchBtn){
+            try {
+                SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
+                        FXMLLoader.load(
+                                getClass().getResource("../../resources/SearchPage.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (event.getSource() == settingsBtn) {
             // do nothing
         } else if (event.getSource() == logoutBtn) {
             Session.setUser(null);
@@ -231,6 +241,7 @@ public class SettingsController {
             String res = sendServerRequest(
                     "REQ:UPDATEBIO:" + Session.getUser().getUsername() + ":" + changeBioText.getText());
             if (res.equals("SUCCESS")) {
+                Session.getUser().setUserBio(changeBioText.getText());
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText("Bio updated successfully!");

@@ -3,12 +3,18 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Server",
+      "request": "launch",
+      "mainClass": "Server",
+      "projectName": "DMS_43beb382"
+    },
+    {
+      "type": "java",
       "name": "App",
       "request": "launch",
       "mainClass": "app.App",
-      "projectName": "LMS_43bed18a",
+      "projectName": "DMS_43beb382",
       "vmArgs": "--module-path C:/Java/javafx-sdk-22.0.1/lib --add-modules javafx.controls,javafx.fxml"
-
     }
   ]
 }

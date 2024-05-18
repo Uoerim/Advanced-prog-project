@@ -43,6 +43,11 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Button>
+                              <Button fx:id="SearchBtn" mnemonicParsing="false" onAction="#handleButtonAction" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="39.0" prefWidth="151.0" style="-fx-background-color: #441bf7; -fx-background-radius: 10px;" text="Search For Friends" textFill="WHITE">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
                               <Button fx:id="directMessagingBtn" mnemonicParsing="false" onAction="#handleButtonAction" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="39.0" prefWidth="151.0" style="-fx-background-color: #441bf7; -fx-background-radius: 10px;" text="Direct Messaging" textFill="WHITE">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />

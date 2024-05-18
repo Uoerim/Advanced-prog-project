@@ -80,13 +80,15 @@ public class AuthenticationController {
             }
             String res = sendServerRequest(
                     "REQ:LOGININTOACCOUNT:" + usernameInpLogin.getText() + ":" + passwordInpLogin.getText());
+                    System.out.println(res + "-------------------------");
             if (res.equals("FAILEDPASSWORD")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Username or password is incorrect!");
                 alert.showAndWait();
                 return;
-            } else if (res.equals("FAILED")) {
+            }
+            if (res.equals("FAILED")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Username or password is incorrect!");
@@ -164,7 +166,7 @@ public class AuthenticationController {
             if (usernameINP.getText().isEmpty() || emailINP.getText().isEmpty() || passwordINP.getText().isEmpty()
                     || rePassINP.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Success");
+                alert.setTitle("Error");
                 alert.setHeaderText("You must fill all fields!");
                 alert.showAndWait();
                 return;

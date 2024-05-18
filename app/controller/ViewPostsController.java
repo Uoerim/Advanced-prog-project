@@ -73,6 +73,8 @@ public class ViewPostsController implements Initializable {
     private Button addCommentBtn;
     @FXML
     private VBox commentsArea;
+    @FXML
+    private Button SearchBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -107,7 +109,15 @@ public class ViewPostsController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (event.getSource() == viewProfileBtn) {
+        } else if(event.getSource() == SearchBtn){
+            try {
+                SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
+                        FXMLLoader.load(
+                                getClass().getResource("../../resources/SearchPage.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (event.getSource() == viewProfileBtn) {
             // do nothing
         } else if (event.getSource() == viewFriendsBtn) {
             try {

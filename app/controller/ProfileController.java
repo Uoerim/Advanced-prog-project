@@ -9,6 +9,8 @@ import java.util.concurrent.CompletableFuture;
 import javax.swing.UIDefaults.LazyValue;
 
 import app.ServerConnection;
+import app.classes.Post.Comment;
+import app.classes.Post.Like;
 import app.classes.Post.Post;
 import app.classes.User.Session;
 import app.classes.User.User;
@@ -74,6 +76,8 @@ public class ProfileController implements Initializable {
     private Label friendsCountLabel;
     @FXML
     private VBox mainView;
+    @FXML
+    private Button SearchBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -125,7 +129,15 @@ public class ProfileController implements Initializable {
             }
         } else if (event.getSource() == viewProfileBtn) {
             // do nothing
-        } else if (event.getSource() == viewFriendsBtn) {
+        } else if(event.getSource() == SearchBtn){
+            try {
+                SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
+                        FXMLLoader.load(
+                                getClass().getResource("../../resources/SearchPage.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (event.getSource() == viewFriendsBtn) {
             try {
                 SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
                         FXMLLoader.load(
@@ -199,15 +211,45 @@ public class ProfileController implements Initializable {
             return;
         }
         for (Integer postIndex : Session.getUser().getPosts()) {
-            System.out.println(Session.getUser().getPosts());
             Task<Void> task1 = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
                     String res2 = sendServerRequest("REQ:" + "GETPOST" + ":" + String.valueOf(postIndex));
+                    if (res2.charAt(res2.length() - 1) == ':') {
+                        res2 += ":";
+                    }
+                    res2 = res2.replaceAll("::", ":null:");
+                    if (res2.charAt(res2.length() - 1) == ':') {
+                        res2 += ":";
+                    }
+                    res2 = res2.replaceAll("::", ":null:");
                     System.out.println(res2);
                     String arr2[] = res2.split(":");
                     Post post = new Post(arr2[0], arr2[1], arr2[2]);
+
                     Platform.runLater(() -> {
+                        if (!arr2[3].equals("null")) {
+                            String comm[] = arr2[3].split(",");
+                            for (String i : comm) {
+                                String res4 = sendServerRequest("REQ:" + "GETCOMMENT" + ":" + i);
+                                String arr4[] = res4.split(":");
+                                Comment comment = new Comment(arr4[1], arr4[2]);
+                                post.addComment(comment);
+                            }
+                        }
+                        System.out.print("\n");
+                        if (!arr2[4].equals("null")) {
+                            System.out.println(arr2 + "---------------------------------");
+                            String lk[] = arr2[4].split(",");
+                            for (String i : lk) {
+                                System.out.println("------" + i);
+                                String res3 = sendServerRequest("REQ:" + "GETLIKE" + ":" + i);
+                                String arr3[] = res3.split(":");
+                                Like like = new Like(arr3[0], arr3[1]);
+                                post.getLikes().add(like);
+                            }
+                        } else {
+                        }
                         VBox rootVBox = new VBox();
                         rootVBox.setMinHeight(198);
                         rootVBox.setMinWidth(662);
@@ -342,7 +384,7 @@ public class ProfileController implements Initializable {
                         fullnameL.setFont(new Font("Arial", 13));
                         fullnameL.setTextFill(Color.web("#ffffff"));
                         Label usernameL = new Label();
-                        usernameL.setText(user.getUsername());
+                        usernameL.setText("@" + user.getUsername());
                         usernameL.setFont(new Font("Arial", 12));
                         usernameL.setTextFill(Color.web("#949494"));
                         Button viewBtn = new Button("View");

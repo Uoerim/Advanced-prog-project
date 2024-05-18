@@ -63,6 +63,8 @@ public class HomePageController implements Initializable {
     private VBox postsArea;
     @FXML
     private VBox mainView;
+    @FXML
+    private Button SearchBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -135,6 +137,14 @@ public class HomePageController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else if (event.getSource() == SearchBtn) {
+            try {
+                SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
+                        FXMLLoader.load(
+                                getClass().getResource("../../resources/SearchPage.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (event.getSource() == directMessagingBtn) {
             try {
                 SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
@@ -155,7 +165,6 @@ public class HomePageController implements Initializable {
             String res = sendServerRequest("REQ:NEWPOST:" + postText.getText() + ":" + Session.getUser().getUsername());
             String arr[] = res.split(":");
             Session.getUser().getPosts().add(Integer.parseInt(arr[0]) - 1);
-            System.err.println(arr[0]);
             VBox rootVBox = new VBox();
             rootVBox.setMinHeight(234);
             rootVBox.setMinWidth(1020);
@@ -336,11 +345,17 @@ public class HomePageController implements Initializable {
                                 res3 += ":";
                             }
                             res3 = res3.replaceAll("::", ":null:");
+                            if (res3.charAt(res3.length() - 1) == ':') {
+                                res3 += ":";
+                            }
+                            res3 = res3.replaceAll("::", ":null:");
                             String arr[] = res3.split(":");
                             User user = new User(arr[0], arr[1], arr[2], arr[3], "https://" + arr[4], "0");
                             ArrayList<String> friendList = new ArrayList<>();
                             ArrayList<String> friendRequestList = new ArrayList<>();
                             ArrayList<String> friendRequestSentList = new ArrayList<>();
+                            ArrayList<Integer> posts = new ArrayList<>();
+
                             if (!arr[6].equals("null")) {
                                 String[] friendListArray = arr[6].split(",");
                                 for (String friend : friendListArray) {
@@ -365,6 +380,14 @@ public class HomePageController implements Initializable {
                                     friendRequestSentList.add(friendRequestSent);
                                 }
                                 user.setFriendRequestSentList(friendRequestSentList);
+                            }
+                            if (!arr[9].equals("null")) {
+
+                                String[] postsArray = arr[9].split(",");
+                                for (String post2 : postsArray) {
+                                    posts.add(Integer.parseInt(post2));
+                                }
+                                user.setPosts(posts);
                             }
 
                             Session.setViewUser(user);

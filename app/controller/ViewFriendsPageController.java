@@ -51,6 +51,8 @@ public class ViewFriendsPageController implements Initializable {
     private Button logoutBtn;
     @FXML
     private VBox viewFriendsView;
+    @FXML
+    private Button SearchBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,7 +95,15 @@ public class ViewFriendsPageController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (event.getSource() == directMessagingBtn) {
+        } else if(event.getSource() == SearchBtn){
+            try {
+                SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
+                        FXMLLoader.load(
+                                getClass().getResource("../../resources/SearchPage.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (event.getSource() == directMessagingBtn) {
             try {
                 SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
                         FXMLLoader.load(
@@ -164,6 +174,8 @@ public class ViewFriendsPageController implements Initializable {
                     ArrayList<String> friendList = new ArrayList<>();
                     ArrayList<String> friendRequestList = new ArrayList<>();
                     ArrayList<String> friendRequestSentList = new ArrayList<>();
+                    ArrayList<Integer> posts = new ArrayList<>();
+
                     if (!arr[6].equals("null")) {
                         String[] friendListArray = arr[6].split(",");
                         for (String friend : friendListArray) {
@@ -188,6 +200,14 @@ public class ViewFriendsPageController implements Initializable {
                             friendRequestSentList.add(friendRequestSent);
                         }
                         user.setFriendRequestSentList(friendRequestSentList);
+                    }
+                    if (!arr[9].equals("null")) {
+
+                        String[] postsArray = arr[9].split(",");
+                        for (String post : postsArray) {
+                            posts.add(Integer.parseInt(post));
+                        }
+                        user.setPosts(posts);
                     }
                     Platform.runLater(() -> {
                         HBox rootHbox = new HBox();

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import app.ServerConnection;
-import app.classes.Post.Post;
+import app.classes.Post.Comment;
+import app.classes.Post.Like;
 import app.classes.User.Session;
 import app.classes.User.User;
 import app.handlers.SceneHandler;
@@ -21,6 +22,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,8 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class ViewFriendsRequestController implements Initializable {
-
+public class SearchController implements Initializable {
     @FXML
     private Button homeBtn;
     @FXML
@@ -50,17 +51,50 @@ public class ViewFriendsRequestController implements Initializable {
     @FXML
     private Button logoutBtn;
     @FXML
-    private VBox viewFriendsView;
+    private Label postTextLabel;
     @FXML
-    private Button SearchBtn;
+    private Label postLikesLabel;
+    @FXML
+    private Label postCommentsLabel;
+    @FXML
+    private Button viewAuthorBtn;
+    @FXML
+    private Button likeBtn;
+    @FXML
+    private TextArea commentsTextArea;
+    @FXML
+    private Button addCommentBtn;
+    @FXML
+    private VBox postsArea;
+    @FXML
+    private TextField searchTextField;
+    @FXML
+    private HBox rootHbox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                System.out.println("Current text: " + newValue);
+                for (var node : postsArea.getChildren()) {
+                    if (node instanceof HBox) {
+                        HBox hbox = (HBox) node;
+                        Object userData = hbox.getUserData();
+                        if (userData instanceof String && ((String) userData).toLowerCase().startsWith(newValue.toLowerCase())) {
+                            hbox.setVisible(true);
+                            hbox.setManaged(true);
+                        } else {
+                            hbox.setVisible(false);
+                            hbox.setManaged(false);
+                        }
+                    }
+                }
+        });
+        
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-
-                loadFriends();
+                loadusers();
                 return null;
             }
         };
@@ -77,15 +111,7 @@ public class ViewFriendsRequestController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if(event.getSource() == SearchBtn){
-            try {
-                SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
-                        FXMLLoader.load(
-                                getClass().getResource("../../resources/SearchPage.fxml")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else if (event.getSource() == viewProfileBtn) {
+        } else if (event.getSource() == viewProfileBtn) {
             try {
                 SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
                         FXMLLoader.load(
@@ -102,7 +128,13 @@ public class ViewFriendsRequestController implements Initializable {
                 e.printStackTrace();
             }
         } else if (event.getSource() == viewFriendsRequestsBtn) {
-            // do nothin
+            try {
+                SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
+                        FXMLLoader.load(
+                                getClass().getResource("../../resources/FriendsRequestsPage.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (event.getSource() == directMessagingBtn) {
             try {
                 SceneHandler.changeScene(settingsBtn.getScene().getWindow(),
@@ -128,7 +160,15 @@ public class ViewFriendsRequestController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        } else if (event.getSource() == viewAuthorBtn) {
+            try {
+                SceneHandler.changeScene(viewAuthorBtn.getScene().getWindow(),
+                        FXMLLoader.load(
+                                getClass().getResource("../../resources/ViewProfilePage.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } 
     }
 
     @FXML
@@ -154,27 +194,84 @@ public class ViewFriendsRequestController implements Initializable {
         return "ERR";
     }
 
-    private void loadFriends() {
-        for (String username : Session.getUser().getFriendRequestList()) {
+    private void loadusers() {
+        String res = sendServerRequest("REQ:" + "GETUSERS");
+        System.out.println(res + "000000000");
+        String arr[] = res.split(":");
+        Session.getSearchUsers().clear();
+        for (String user : arr) {
+            if (!user.equals("")) {
+                Session.getSearchUsers().add(user);
+            }
+        }
+        for (String username : Session.getSearchUsers()) {
             Task<Void> task2 = new Task<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    String res2 = sendServerRequest("REQ:" + "GETUSER" + ":" + username);
-                    String arr2[] = res2.split(":");
-                    User user = new User(arr2[0], arr2[1], arr2[2], arr2[3], arr2[4], "0");
+                    String res3 = sendServerRequest("REQ:" + "GETUSER" + ":" + username);
+                    if (res3.charAt(res3.length() - 1) == ':') {
+                        res3 += ":";
+                    }
+                    res3 = res3.replaceAll("::", ":null:");
+                    if (res3.charAt(res3.length() - 1) == ':') {
+                        res3 += ":";
+                    }
+                    res3 = res3.replaceAll("::", ":null:");
+                    System.out.println(res3);
+                    String arr[] = res3.split(":");
+                    User user = new User(arr[0], arr[1], arr[2], arr[3], "https://" + arr[4], "0");
+                    ArrayList<String> friendList = new ArrayList<>();
+                    ArrayList<String> friendRequestList = new ArrayList<>();
+                    ArrayList<String> friendRequestSentList = new ArrayList<>();
+                    ArrayList<Integer> posts = new ArrayList<>();
+                    if (!arr[6].equals("null")) {
+                        String[] friendListArray = arr[6].split(",");
+                        for (String friend : friendListArray) {
+                            friendList.add(friend);
+                        }
+                        user.setFriendList(friendList);
+
+                    }
+                    if (!arr[7].equals("null")) {
+
+                        String[] friendRequestListArray = arr[7].split(",");
+                        for (String friendRequest : friendRequestListArray) {
+                            friendRequestList.add(friendRequest);
+                        }
+                        user.setFriendRequestList(friendRequestList);
+
+                    }
+                    if (!arr[8].equals("null")) {
+
+                        String[] friendRequestSentListArray = arr[8].split(",");
+                        for (String friendRequestSent : friendRequestSentListArray) {
+                            friendRequestSentList.add(friendRequestSent);
+                        }
+                        user.setFriendRequestSentList(friendRequestSentList);
+                    }
+                    if (!arr[9].equals("null")) {
+
+                        String[] postsArray = arr[9].split(",");
+                        for (String post2 : postsArray) {
+                            posts.add(Integer.parseInt(post2));
+                        }
+                        user.setPosts(posts);
+                    }
                     Platform.runLater(() -> {
+                        System.out.println("lol");
                         HBox rootHbox = new HBox();
                         rootHbox.setMinHeight(100);
                         rootHbox.setMinWidth(200);
                         rootHbox.setStyle("-fx-border-color: white; -fx-background-color: #313131;");
                         rootHbox.setAlignment(javafx.geometry.Pos.CENTER);
+                        rootHbox.setUserData(user.getUsername());
 
                         ImageView profileImage = new ImageView();
                         profileImage.setFitHeight(90);
                         profileImage.setFitWidth(90);
                         profileImage.setPickOnBounds(true);
                         profileImage.setPreserveRatio(true);
-                        profileImage.setImage(new Image("https://" + user.getPicPath()));
+                        profileImage.setImage(new Image(user.getPicPath()));
 
                         VBox profielDataVbox = new VBox();
                         profielDataVbox.setMinHeight(150);
@@ -197,18 +294,21 @@ public class ViewFriendsRequestController implements Initializable {
                         profielBtnsVbox.setAlignment(javafx.geometry.Pos.CENTER);
                         profielBtnsVbox.setSpacing(10);
 
-                        Button viewUserProfileBtn = new Button("Accept");
+                        Button viewUserProfileBtn = new Button("View Profile");
                         viewUserProfileBtn.setUserData(user.getUsername());
                         viewUserProfileBtn.setPrefHeight(39.0);
                         viewUserProfileBtn.setPrefWidth(150.0);
                         viewUserProfileBtn.setStyle(
                                 "-fx-cursor: hand; -fx-background-color: #441bf7; -fx-text-fill: white; -fx-background-radius: 10px;");
                         viewUserProfileBtn.setOnAction((e) -> {
-                            String res3 = sendServerRequest("REQ:" + "ADDFRIEND" + ":" + Session.getUser().getUsername() + ":" + user.getUsername());
-                            System.out.println(res3);
-                            Session.getUser().getFriendList().add(user.getUsername());
-                            Session.getUser().getFriendRequestList().remove(user.getUsername());
-                            viewFriendsView.getChildren().remove(rootHbox);
+                            Session.setViewUser(user);
+                            try {
+                                SceneHandler.changeScene(logoutBtn.getScene().getWindow(),
+                                        FXMLLoader.load(
+                                                getClass().getResource("../../resources/ViewProfilePage.fxml")));
+                            } catch (IOException r) {
+                                r.printStackTrace();
+                            }
                         });
                         viewUserProfileBtn.setOnMouseEntered((e) -> {
                             viewUserProfileBtn.setStyle(
@@ -219,30 +319,10 @@ public class ViewFriendsRequestController implements Initializable {
                                     "-fx-cursor: hand; -fx-background-color: #441bf7; -fx-text-fill: white; -fx-background-radius: 10px;");
                         });
 
-                        Button removeFriendBtn = new Button("Decline");
-                        removeFriendBtn.setUserData(user.getUsername());
-                        removeFriendBtn.setPrefHeight(39.0);
-                        removeFriendBtn.setPrefWidth(150.0);
-                        removeFriendBtn.setStyle(
-                                "-fx-cursor: hand; -fx-background-color: #441bf7; -fx-text-fill: white; -fx-background-radius: 10px;");
-                        removeFriendBtn.setOnAction((e) -> {
-                            String res3 = sendServerRequest("REQ:" + "DECLINEFRIEND" + ":" + Session.getUser().getUsername() + ":" + user.getUsername());
-                            System.out.println(res3);
-                            Session.getUser().getFriendRequestList().remove(user.getUsername());
-                            viewFriendsView.getChildren().remove(rootHbox);
-                        });
-                        removeFriendBtn.setOnMouseEntered((e) -> {
-                            removeFriendBtn.setStyle(
-                                    "-fx-cursor: hand; -fx-background-color: #3205f7; -fx-text-fill: white; -fx-background-radius: 10px;");
-                        });
-                        removeFriendBtn.setOnMouseExited((e) -> {
-                            removeFriendBtn.setStyle(
-                                    "-fx-cursor: hand; -fx-background-color: #441bf7; -fx-text-fill: white; -fx-background-radius: 10px;");
-                        });
-                        profielBtnsVbox.getChildren().addAll(viewUserProfileBtn, removeFriendBtn);
+                        profielBtnsVbox.getChildren().addAll(viewUserProfileBtn);
 
                         rootHbox.getChildren().addAll(profileImage, profielDataVbox, profielBtnsVbox);
-                        viewFriendsView.getChildren().add(0, rootHbox);
+                        postsArea.getChildren().add(0, rootHbox);
                     });
 
                     return null;

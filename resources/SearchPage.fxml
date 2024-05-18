@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox fx:id="mainView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1300.0" prefHeight="569.0" prefWidth="744.0" style="-fx-background-color: #414141;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.ViewFriendsPageController">
+<VBox fx:id="mainView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="768.0" minWidth="1300.0" prefHeight="569.0" prefWidth="744.0" style="-fx-background-color: #414141;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.SearchController">
    <children>
       <AnchorPane prefHeight="800.0" prefWidth="1300.0">
          <children>
@@ -73,64 +71,37 @@
                   </AnchorPane>
                </children>
             </VBox>
-            <VBox layoutX="279.0" layoutY="6.0" prefHeight="761.0" prefWidth="1019.0" spacing="30.0">
-               <padding>
-                  <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-               </padding>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <children>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="706.0" prefWidth="939.0">
-                     <content>
-                        <VBox fx:id="viewFriendsView" prefHeight="680.0" prefWidth="939.0" style="-fx-background-color: #313131;">
+            <ScrollPane hbarPolicy="NEVER" layoutX="279.0" layoutY="121.0" prefHeight="647.0" prefWidth="1020.0" style="-fx-background-color: #313131;">
+               <content>
+                  <VBox fx:id="postsArea" prefHeight="647.0" prefWidth="1020.0" style="-fx-background-color: #313131;">
+                     <children>
+                        <!-- <VBox minHeight="234.0" minWidth="1020.0" prefHeight="234.0" prefWidth="1020.0" style="-fx-border-color: white; -fx-background-color: #313131;">
                            <children>
-                              <!-- <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                              <HBox alignment="CENTER" prefHeight="164.0" prefWidth="1020.0">
                                  <children>
-                                    <ImageView fitHeight="150.0" fitWidth="167.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../Pictures/45a9eb1f137e3c05a8f7a12f26777de1.jpg" />
-                                       </image>
-                                    </ImageView>
-                                    <VBox alignment="CENTER" prefHeight="150.0" prefWidth="206.0">
-                                       <children>
-                                          <Label text="Yosif Ibrahim" textFill="WHITE">
-                                             <font>
-                                                <Font size="22.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="\@uoerim" textFill="#727272">
-                                             <font>
-                                                <Font name="System Bold" size="13.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </VBox> -->
-                                    <!-- <VBox alignment="CENTER" prefHeight="150.0" prefWidth="225.0" spacing="10.0">
-                                       <children>
-                                          <Button fx:id="settingsBtn1" mnemonicParsing="false" onAction="#handleButtonAction" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="39.0" prefWidth="150.0" style="-fx-background-color: #441bf7; -fx-background-radius: 10px;" text="View Profile" textFill="WHITE">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
-                                          </Button>
-                                          <Button fx:id="settingsBtn11" mnemonicParsing="false" onAction="#handleButtonAction" onMouseEntered="#handleMouseEntered" onMouseExited="#handleMouseExited" prefHeight="39.0" prefWidth="150.0" style="-fx-background-color: #441bf7; -fx-background-radius: 10px;" text="Remove Friend" textFill="WHITE">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
-                                          </Button>
-                                       </children>
-                                    </VBox>
+                                    <Label fx:id="postTextLabel" text="Label" textFill="WHITE">
+                                       <font>
+                                          <Font size="19.0" />
+                                       </font>
+                                    </Label>
                                  </children>
-                                 <padding>
-                                    <Insets left="10.0" top="10.0" />
-                                 </padding>
-                              </HBox> -->
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="70.0" prefWidth="1020.0" spacing="20.0">
+                                 <children>
+                                    <Button fx:id="viewPostBtn" mnemonicParsing="false" prefHeight="41.0" prefWidth="176.0" style="-fx-background-color: #515151; -fx-background-radius: 10px;" text="View Post" textFill="WHITE" />
+                                 </children>
+                              </HBox>
                            </children>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
+                        </VBox> -->
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <HBox alignment="CENTER" layoutX="279.0" prefHeight="121.0" prefWidth="1020.0">
+               <children>
+                  <TextField fx:id="searchTextField" prefHeight="43.0" prefWidth="357.0" promptText="Type username..." />
                </children>
-            </VBox>
+            </HBox>
          </children>
       </AnchorPane>
    </children>
